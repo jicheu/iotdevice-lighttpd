@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cd $SNAP_DATA/www
 git pull
 
