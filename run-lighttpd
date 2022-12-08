@@ -21,7 +21,7 @@ server.errorlog             = "$SNAP_DATA/iotdevice-lighttpd/error.log"
 server.pid-file             = "$SNAP_DATA/iotdevice-lighttpd.pid"
 server.port                 = 80
 webdav.sqlite-db-name       = "$SNAP_DATA/iotdevice-lighttpd/lighttpd.webdav_lock.db"
-index-file.names            = ( "index.php", ".index.html", "index.lighttpd.html" )
+index-file.names            = ( "index.php", "index.html", "index.lighttpd.html" )
 url.access-deny             = ( "~", ".inc" )
 
 
@@ -89,9 +89,5 @@ chmod 0600 $CONF
 [ -e $SNAP_DATA/etc/lighttpd/conf-enabled ] || mkdir -p $SNAP_DATA/etc/lighttpd/conf-enabled
 [ -e $SNAP_DATA/run/lighttpd ] || mkdir -p $SNAP_DATA/run/lighttpd
 
-touch $SNAP_DATA/www/.index.html
-
-#ln -sf $SNAP/etc/lighttpd/conf-available/10-fastcgi.conf $SNAP_DATA/etc/lighttpd/conf-enabled/
-#ln -sf $SNAP/etc/lighttpd/conf-available/15-fastcgi-php.conf $SNAP_DATA/etc/lighttpd/conf-enabled/
 
 $BIN -D -f $CONF -m /$SNAP/usr/lib/lighttpd
