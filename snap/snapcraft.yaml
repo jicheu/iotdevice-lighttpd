@@ -25,6 +25,8 @@ apps:
     command: check-web
     daemon: oneshot
     plugs: [network, network-bind]
+    environment:
+      PATH: $PATH:$SNAP/usr/lib/git-core
     
 architectures:
   - build-on: arm64
@@ -47,6 +49,7 @@ parts:
     plugin: nil
     stage-packages:
            - git
+           - curl 
     source: .
     override-build: |
       cp -av check-web $CRAFT_PART_INSTALL
