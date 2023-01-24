@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd $SNAP_DATA/www
+curl -sS --unix-socket /run/snapd.socket http://localhost/v2/apps \
+| jq > snap_list.txt
+exit 0

@@ -27,6 +27,10 @@ apps:
     plugs: [network, network-bind]
     environment:
       PATH: $PATH:$SNAP/usr/lib/git-core
+  snap-list:
+    command: snap-list
+    daemon: oneshot
+    plugs: [network, network-bind, snapd-control]
     
 architectures:
   - build-on: arm64
@@ -64,6 +68,14 @@ parts:
     override-build: |
       cp -av check-video $CRAFT_PART_INSTALL
     after: [check-web]
+  snap-list:
+    plugin: nil
+    source: .
+    stage-packages:
+       - jq
+    override-build: |
+      cp -av snap-list $CRAFT_PART_INSTALL
+    after: [check-video]
   copy:
     plugin: nil
     source: .
