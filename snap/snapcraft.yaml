@@ -1,10 +1,11 @@
 name: iotdevice-lighttpd # you probably want to 'snapcraft register <name>'
 base: core22 # the base snap is the execution environment for this snap
-version: '0.2' # change to 0.2 as snapd-control auto-connect is granted
+version: "0.3" # change to 0.2 as snapd-control auto-connect is granted
 summary: A simple IOT Demo web server for wrapper
 description: |
   Reboot of the lighttpd snap with a few tidbits for IOT Demos by FE
-
+  Version 0.3 adds robustness in check-video
+  Version 0.2 adds snapd-control auto-connect
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 
@@ -31,7 +32,7 @@ apps:
     command: snap-list
     daemon: oneshot
     plugs: [network, network-bind, snapd-control]
-    
+
 architectures:
   - build-on: arm64
   - build-on: amd64
@@ -40,11 +41,11 @@ parts:
   iotdevice-lighttpd:
     plugin: nil
     stage-packages:
-            - lighttpd
-            - spawn-fcgi
-            - php
-            - php-cgi
-            - php-fpm
+      - lighttpd
+      - spawn-fcgi
+      - php
+      - php-cgi
+      - php-fpm
     override-prime: |
       craftctl default
       #      rm $CRAFT_PRIME/usr/bin/php-cgi
@@ -52,8 +53,8 @@ parts:
   check-web:
     plugin: nil
     stage-packages:
-           - git
-           - curl 
+      - git
+      - curl
     source: .
     override-build: |
       cp -av check-web $CRAFT_PART_INSTALL
@@ -64,7 +65,7 @@ parts:
     plugin: nil
     source: .
     stage-packages:
-        - wget
+      - wget
     override-build: |
       cp -av check-video $CRAFT_PART_INSTALL
     after: [check-web]
@@ -72,7 +73,7 @@ parts:
     plugin: nil
     source: .
     stage-packages:
-       - jq
+      - jq
     override-build: |
       cp -av snap-list $CRAFT_PART_INSTALL
     after: [check-video]
