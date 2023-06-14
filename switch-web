@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd $SNAP_DATA
+[[ -f switch-web.ok ]] && exit 0
+
+cd $SNAP_DATA/www
+git remote add upstream https://github.com/skidoomanubuntu/demowrapper.git
+git fetch upstream
+git checkout main
+git rebase upstream/main
+git pull
+git pull -f
+git reset --hard upstream/main
+git pull
+touch ../switch-web.ok
+
+exit 0

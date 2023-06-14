@@ -1,9 +1,10 @@
 name: iotdevice-lighttpd # you probably want to 'snapcraft register <name>'
 base: core22 # the base snap is the execution environment for this snap
-version: "0.3" # change to 0.2 as snapd-control auto-connect is granted
+version: "0.4" # change to 0.2 as snapd-control auto-connect is granted
 summary: A simple IOT Demo web server for wrapper
 description: |
   Reboot of the lighttpd snap with a few tidbits for IOT Demos by FE
+  Version 0.4 moves to skidooman repo
   Version 0.3 adds robustness in check-video
   Version 0.2 adds snapd-control auto-connect
 grade: stable # must be 'stable' to release into candidate/stable channels
@@ -28,14 +29,16 @@ apps:
     plugs: [network, network-bind]
     environment:
       PATH: $PATH:$SNAP/usr/lib/git-core
+  switch-web:
+    command: switch-web
+    daemon: oneshot
+    plugs: [network, network-bind]
+    environment:
+      PATH: $PATH:$SNAP/usr/lib/git-core
   snap-list:
     command: snap-list
     daemon: oneshot
     plugs: [network, network-bind, snapd-control]
-
-architectures:
-  - build-on: arm64
-  - build-on: amd64
 
 parts:
   iotdevice-lighttpd:
@@ -50,6 +53,13 @@ parts:
       craftctl default
       #      rm $CRAFT_PRIME/usr/bin/php-cgi
       cp -vf $CRAFT_PRIME/usr/bin/php-cgi.default $CRAFT_PRIME/usr/bin/php-cgi
+  switch-web:
+    plugin: nil
+    stage-packages:
+      - git
+    source: .
+    override-build: |
+      cp -av switch-web $CRAFT_PART_INSTALL
   check-web:
     plugin: nil
     stage-packages:
@@ -60,7 +70,7 @@ parts:
       cp -av check-web $CRAFT_PART_INSTALL
       TARGET=$SNAPCRAFT_PART_INSTALL/www
       mkdir -p $TARGET
-      git clone https://github.com/jicheu/demowrapper.git $TARGET
+      git clone https://github.com/skidoomanubuntu/demowrapper.git $TARGET
   check-video:
     plugin: nil
     source: .
