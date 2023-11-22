@@ -3,6 +3,8 @@
 cd $SNAP_DATA
 [[ -f switch-web.ok ]] && exit 0
 
+[[ -d www ]] && mv www wwwold && mkdir www && git clone https://github.com/skidoomanubuntu/demowrapper.git www
+
 cd $SNAP_DATA/www
 git remote add upstream https://github.com/skidoomanubuntu/demowrapper.git
 git fetch upstream
